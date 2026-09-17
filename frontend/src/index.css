@@ -136,6 +136,7 @@ header {
 #summary-header {
   display: flex;
   justify-content: space-between;
+  padding: 40px 0px;
 }
 
 #content-area {
@@ -149,6 +150,14 @@ header {
   justify-content: space-between;
 }
 
-.card {
-  padding: 10px;
+.card-item {
+  border: 1px solid #ECEFF5;
+  padding: 20px 50px;
+}
+.card-data {
+  display: flex;
+}
+
+#trade-data-area {
+    padding: 40px 0px;
 }
