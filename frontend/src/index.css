@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -108,4 +108,47 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+} */
+body, h1, p {
+    margin: 0;
+}
+#screen-area {
+  display: flex;
+  height: 100vh;
+}
+
+aside {
+  width: 245px;
+  border-right: 1px solid #ECEFF5;
+}
+
+main {
+  /* width: 100%; */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  border-bottom: 1px solid #ECEFF5;
+}
+
+#summary-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#content-area {
+  background-color: #F5F7FB;
+  flex: 1;
+  padding: 40px 160px;
+}
+
+#card-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  padding: 10px;
 }
