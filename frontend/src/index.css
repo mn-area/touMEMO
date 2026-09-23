@@ -139,6 +139,16 @@ header {
   padding: 40px 0px;
 }
 
+#summary-text {
+  color: #69748d;
+  font-size: .75rem 12px;
+  font-weight: 700;
+}
+
+#summary-title {
+  margin: 0;
+}
+
 #content-area {
   background-color: #F5F7FB;
   flex: 1;
@@ -146,18 +156,91 @@ header {
 }
 
 #card-area {
+  display: grid;
+  row-gap: calc(1rem);
+  column-gap: calc(1rem);
+}
+
+.card-item {
+  /* border: 1px solid;
+  border-color: rgb(228, 232, 240); */
+  border-radius: calc(1.125rem);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  padding: 20px;
+}
+
+.card-data {
   display: flex;
   justify-content: space-between;
 }
 
-.card-item {
-  border: 1px solid #ECEFF5;
-  padding: 20px 50px;
-}
-.card-data {
-  display: flex;
+.data-count {
+  font-size: 25px;
+  margin-top: 12px;
 }
 
+.card-text {
+  font-size: 10px;
+  margin-top: 16px;
+}
+
+
 #trade-data-area {
-    padding: 40px 0px;
+  border-radius: calc(1.125rem);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  margin-top: 32px;
+
+}
+
+#data-area-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 24px;
+  /* border-bottom: 1px solid;
+  border-color: rgb(228, 232, 240); */
+}
+
+#data-area-title {
+  font-size: 1rem;
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+.data-text {
+  margin-top: 4px;
+  color: #929bb0;
+  font-size: .75rem;
+}
+
+#trade-data-table {
+  width: 100%;
+  text-align: left;
+  padding: 20px 24px;
+}
+
+#brand-search-input {
+  border: 1px solid;
+  border-radius: .625rem;
+  border-color: #e1e6ef;
+  height: 30px;
+}
+
+#brand-search-input:focus {
+  outline: 1px solid #7889d0;
+}
+
+.border {
+  border: 1px solid;
+  border-color: rgb(228, 232, 240);
+}
+
+.border-b {
+  border-bottom: 1px solid;
+  border-color: rgb(228, 232, 240);
+}
+
+@media (min-width: 80rem) {
+  #card-area {
+    grid-template-columns: repeat(4, minmax(0px, 1fr));
+  }
 }
