@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import Tradelist from './Tradelist'
+import TradeList from './TradeList'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Tradelist />
+    <TradeList />
   </StrictMode>
 )

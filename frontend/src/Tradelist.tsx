@@ -1,5 +1,11 @@
-function Tradelist() {
+import { useState } from "react";
+import RegistTradeDialog from './RegistTradeDialog'
+
+export default function TradeListTemp() {
+
     // JavaScriptのコードを書く
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         /* HTMLで画面の見た目部分を書く */
         <>
@@ -15,7 +21,7 @@ function Tradelist() {
             <main>
                 <header>
                     <h4>投資一覧</h4>
-                    <button type="button" id="regist-trade-btn" className="font-bold">
+                    <button type="button" id="regist-trade-btn" className="font-bold" onClick={() => setIsOpen(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-plus" aria-hidden="true" data-icon="inline-start"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
                         投資データを登録
                     </button>
@@ -184,9 +190,10 @@ function Tradelist() {
                     </section>
                 </div>
             </main>
+            <RegistTradeDialog isOpen={isOpen} onClose={() => setIsOpen(false)}/>
         </div>
         </>
     )
 }
 
-export default Tradelist
+// export default Tradelist

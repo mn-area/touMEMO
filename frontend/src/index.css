@@ -109,6 +109,7 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 } */
+@import "tailwindcss";
 
 #trade-data-area button {
   font: inherit;
