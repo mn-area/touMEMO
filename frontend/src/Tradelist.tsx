@@ -21,7 +21,7 @@ export default function TradeListTemp() {
             <main>
                 <header>
                     <h4>投資一覧</h4>
-                    <button type="button" id="regist-trade-btn" className="font-bold" onClick={() => setIsOpen(true)}>
+                    <button type="button" id="open-trade-dialg-btn" className="font-bold" onClick={() => setIsOpen(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-plus" aria-hidden="true" data-icon="inline-start"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
                         投資データを登録
                     </button>
@@ -30,12 +30,12 @@ export default function TradeListTemp() {
                     <div id="summary-header">
                         <div>
                             <p id="summary-text">資産状況をひと目で確認</p>
-                            <h2 id="summary-title">投資サマリー</h2>
+                            <h2 id="summary-title" className="text-2xl font-bold">投資サマリー</h2>
                         </div>
                         <span id="current-month" className="font-bold">2026年9月</span>
                     </div>
                     <section id="card-area">
-                        <div className="card-item border">
+                        <div className="card-item border border-[#dfe4ed]">
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">データ件数</p>
@@ -47,7 +47,7 @@ export default function TradeListTemp() {
                             </div>
                             <p className="card-text grey-text">登録済みの投資データ</p>
                         </div>
-                        <div className="card-item border">
+                        <div className="card-item border border-[#dfe4ed]">
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">購入金額合計</p>
@@ -59,7 +59,7 @@ export default function TradeListTemp() {
                             </div>
                             <p className="card-text grey-text">これまでの購入総額</p>
                         </div>
-                        <div className="card-item border">
+                        <div className="card-item border border-[#dfe4ed]">
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">売却金額合計</p>
@@ -71,7 +71,7 @@ export default function TradeListTemp() {
                             </div>
                             <p className="card-text grey-text">これまでの売却総額</p>
                         </div>
-                        <div className="card-item border" >
+                        <div className="card-item border border-[#dfe4ed]">
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">収支</p>
@@ -84,7 +84,7 @@ export default function TradeListTemp() {
                             <p className="card-text grey-text">売却金額 − 購入金額</p>
                         </div>
                     </section>
-                    <section id="trade-data-area" className="border">
+                    <section id="trade-data-area" className="border border-[#dfe4ed]">
                         <div id="data-area-header" className="border-b">
                             <div>
                                 <h2 id="data-area-title">投資データ</h2>
