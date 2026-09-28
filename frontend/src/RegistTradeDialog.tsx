@@ -1,12 +1,24 @@
+import { useForm } from 'react-hook-form';
+
 type Props = {
     isOpen: boolean,
     onClose:  () => void
 }
+
+// フォームで扱う型を定義
+type FormData = {
+    unitprice: string;
+};
+
 export default function RegistTradeDialog ({isOpen, onClose}: Props) {
-    
+    const { register, handleSubmit } = useForm<FormData>();
     if (!isOpen) {
         return null;
     }
+    const onSubmit = (data: FormData) => {
+        console.log(data);
+    };
+
     return (
         <>
             <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
@@ -21,7 +33,7 @@ export default function RegistTradeDialog ({isOpen, onClose}: Props) {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
                             </button>
                         </div>
-                        <form className="grid gap-5 px-7 py-6">
+                        <form className="grid gap-5 px-7 py-6" onSubmit={handleSubmit(onSubmit)}>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     取引日
@@ -55,7 +67,7 @@ export default function RegistTradeDialog ({isOpen, onClose}: Props) {
                             <div  className="grid gap-4 sm:grid-cols-3">
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     単価
-                                    <input id="unitprice-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
+                                    <input {...register("unitprice" , { required: true })} id="unitprice-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     手数料
