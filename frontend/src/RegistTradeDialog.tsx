@@ -7,17 +7,34 @@ type Props = {
 
 // フォームで扱う型を定義
 type FormData = {
+    tradedate: Date;
+    brandname: string;
+    investmenttype: number;
+    tradetype: number;
     unitprice: string;
+    fee: number;
+    quantity: number;
+    reason: string;
+    memo: string;
 };
 
 export default function RegistTradeDialog ({isOpen, onClose}: Props) {
-    const { register, handleSubmit } = useForm<FormData>();
+    const { register, setValue, watch, handleSubmit } = useForm<FormData>({
+        mode: 'onSubmit', 
+        defaultValues:{
+            investmenttype: 1,
+            tradetype: 1
+        },
+    });
+
     if (!isOpen) {
         return null;
     }
     const onSubmit = (data: FormData) => {
         console.log(data);
     };
+    const investmenttypeValue = watch("investmenttype");
+    const tradetypeValue = watch("tradetype");
 
     return (
         <>
@@ -37,11 +54,11 @@ export default function RegistTradeDialog ({isOpen, onClose}: Props) {
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     取引日
-                                    <input id="tradedate-input" type="date" className="h-10 rounded-lg border border-[#dfe4ed] px-3 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]" name="date"></input>
+                                    <input {...register("tradedate", { required: true })} id="tradedate-input" type="date" className="h-10 rounded-lg border border-[#dfe4ed] px-3 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]"></input>
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     銘柄名
-                                    <select id="brandname-select" className="h-10 border border-[#dfe4ed] rounded-lg px-3 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]">
+                                    <select {...register("brandname" , { required: true })} id="brandname-select" className="h-10 border border-[#dfe4ed] rounded-lg px-3 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]">
                                         <option disabled selected>銘柄名を選択してください</option>
                                         <option>トヨタ自動車（7203）</option>
                                         <option>任天堂（7974）</option>
@@ -53,15 +70,15 @@ export default function RegistTradeDialog ({isOpen, onClose}: Props) {
                             <div className="grid gap-2">
                                 <span className="text-xs font-bold text-[#5d6880]">投資種別</span>
                                 <div className="flex gap-2">
-                                    <button className="flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold border-[#30469b] bg-[#eef1ff] text-[#30469b]">株式投資</button>
-                                    <button className="flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold border-[#dfe4ed] text-[#8791a4]">仮想通貨</button>
+                                    <button type='button' onClick={() => setValue('investmenttype', 1)} className={`flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold ${investmenttypeValue === 1 ? "border-[#30469b] bg-[#eef1ff] text-[#30469b]" : "border-[#dfe4ed] text-[#8791a4]"}`}>株式投資</button>
+                                    <button type='button' onClick={() => setValue('investmenttype', 2)} className={`flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold ${investmenttypeValue === 2 ? "border-[#0b975] bg-[#fffaee] text-[#9b7230]" : "border-[#dfe4ed] text-[#8791a4]"}`}>仮想通貨</button>
                                 </div>
                             </div>
                             <div className="grid gap-2">
                                 <span className="text-xs font-bold text-[#5d6880]">区分</span>
                                 <div className="flex gap-2">
-                                    <button className="flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold border-[#42aa82] bg-[#edf9f3] text-[#258861]">購入</button>
-                                    <button className="flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold border-[#dfe4ed] text-[#8791a4]">売却</button>
+                                    <button type='button' onClick={() => setValue('tradetype', 1)} className={`flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold ${tradetypeValue === 1 ? "border-[#42aa82] bg-[#edf9f3] text-[#258861]" : "border-[#dfe4ed] text-[#8791a4]"}`}>購入</button>
+                                    <button type='button' onClick={() => setValue('tradetype', 2)} className={`flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold ${tradetypeValue === 2 ? "border-[#db7c85] bg-[#fff1f2] text-[#c44f5d]" : "border-[#dfe4ed] text-[#8791a4]"}`}>売却</button>
                                 </div>
                             </div>
                             <div  className="grid gap-4 sm:grid-cols-3">
@@ -71,21 +88,21 @@ export default function RegistTradeDialog ({isOpen, onClose}: Props) {
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     手数料
-                                    <input id="fee-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
+                                    <input {...register("fee" , { required: true })} id="fee-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     数量
-                                    <input id="quantity-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
+                                    <input {...register("quantity" , { required: true })} id="quantity-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
                                 </label>
                             </div>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     購入/売却理由
-                                    <textarea id="reason-input" placeholder="取引の理由を入力" rows={3} className="resize-none rounded-lg border border-[#dfe4ed] px-3 py-2 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]" name="date"></textarea>
+                                    <textarea {...register("reason")} id="reason-input" placeholder="取引の理由を入力" rows={3} className="resize-none rounded-lg border border-[#dfe4ed] px-3 py-2 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]"></textarea>
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     メモ
-                                    <textarea id="memo-input" placeholder="メモを入力" rows={3} className="resize-none rounded-lg border border-[#dfe4ed] px-3 py-2 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]" name="date"></textarea>
+                                    <textarea {...register("memo")}  id="memo-input" placeholder="メモを入力" rows={3} className="resize-none rounded-lg border border-[#dfe4ed] px-3 py-2 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]"></textarea>
                                 </label>
                             </div>
                             <div className="flex justify-between border-t border-[#edf0f5] pt-5">
