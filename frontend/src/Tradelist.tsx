@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RegistTradeDialog from './RegistTradeDialog'
+import SideMenu from "./SideMenu";
 
 export default function TradeListTemp() {
 
@@ -10,14 +11,7 @@ export default function TradeListTemp() {
         /* HTMLで画面の見た目部分を書く */
         <>
         <div id="screen-area">
-            <aside>
-                <h2>関連リンク</h2>
-                <ul>
-                    <li><a href="#link1">投資一覧</a></li>
-                    <li><a href="#link2">カレンダー</a></li>
-                    <li><a href="#link3">投資推移グラフ</a></li>
-                </ul>
-            </aside>
+            <SideMenu />
             <main>
                 <header>
                     <h4>投資一覧</h4>
