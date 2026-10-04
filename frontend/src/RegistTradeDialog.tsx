@@ -1,25 +1,16 @@
 import { useForm } from 'react-hook-form';
-
+import type { FormData } from '../src/types/common'
 type Props = {
     isOpen: boolean,
-    onClose:  () => void
+    isMode: string,
+    onClose:  () => void,
+    addTrade: (data: FormData) => void,
+    editTrade: (id:number, data:FormData) => void,
+    deleteTrade: (id:number, data:FormData) => void
 }
 
-// フォームで扱う型を定義
-type FormData = {
-    tradedate: Date;
-    brandname: string;
-    investmenttype: number;
-    tradetype: number;
-    unitprice: number;
-    fee: number;
-    quantity: number;
-    reason: string;
-    memo: string;
-};
-
-export default function RegistTradeDialog ({isOpen, onClose}: Props) {
-    const { register, setValue, watch, handleSubmit, formState: { errors } } = useForm<FormData>({
+export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, editTrade, deleteTrade }: Props) {
+    const { register, setValue, watch, handleSubmit, formState: { errors }, getValues } = useForm<FormData>({
         mode: 'onSubmit', 
         defaultValues:{
             investmenttype: 1,
@@ -31,8 +22,22 @@ export default function RegistTradeDialog ({isOpen, onClose}: Props) {
         return null;
     }
     const onSubmit = (data: FormData) => {
+        console.log("new")
+        addTrade(data);
         console.log(data);
     };
+
+    const editData = (data: FormData) => {
+        console.log("edit")
+        editTrade(2, data);
+        console.log(data)
+    }
+
+    const deleteData = (data: FormData) => {
+        console.log("delete")
+        deleteTrade(2,data);
+        console.log(data)
+    }
     const investmenttypeValue = watch("investmenttype");
     const tradetypeValue = watch("tradetype");
 
@@ -112,7 +117,15 @@ export default function RegistTradeDialog ({isOpen, onClose}: Props) {
                             </div>
                             <div className="flex justify-between border-t border-[#edf0f5] pt-5">
                                 <span></span>
-                                <button type="submit" id="trade-regist-btn" className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">登録する</button>
+                                {isMode === "new" &&
+                                    <button type="submit" id="trade-regist-btn" className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">登録する</button>
+                                }
+                                {isMode === "edit" &&
+                                <div>
+                                    <button type='button' id="trade-delete-btn" onClick={() => deleteData(getValues())} className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">削除</button>
+                                    <button type='button' id="trade-edit-btn" onClick={() => editData(getValues())} className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">編集内容を保存</button>
+                                </div>
+                                }
                             </div>
                         </form>
                     </div>

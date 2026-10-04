@@ -1,11 +1,90 @@
 import { useState } from "react";
 import RegistTradeDialog from './RegistTradeDialog'
+import type { FormData } from '../src/types/common'
 import SideMenu from "./SideMenu";
 
 export default function TradeListTemp() {
-
     // JavaScriptのコードを書く
     const [isOpen, setIsOpen] = useState(false);
+    const [dialogMode, setDialogMode] = useState("new");
+    const [trades, setTrades] = useState([
+        {
+            id: 1,
+            tradedate: new Date("2026/09/23"),
+            brandname: 'トヨタ自動車 (7203)',
+            investmenttype: 1,
+            tradetype: 1,
+            unitprice: 2700,
+            fee: 700,
+            quantity:  40,
+            reason: '',
+            memo: ''
+        },
+        {
+            id: 2,
+            tradedate: new Date("2026/09/23"),
+            brandname: '任天堂 (7954)',
+            investmenttype: 1,
+            tradetype: 1,
+            unitprice: 700,
+            fee: 1000,
+            quantity:  5,
+            reason: '',
+            memo: ''
+        },
+        {
+            id: 3,
+            tradedate: new Date("2026/09/23"),
+            brandname: 'Bitcoin (BTC)',
+            investmenttype: 2,
+            tradetype: 2,
+            unitprice: 500,
+            fee: 100,
+            quantity:  1,
+            reason: '',
+            memo: ''
+        }
+    ]);
+
+    const addTrade = (data:FormData) => {
+        setTrades(prevTrades => [
+            ...prevTrades,
+            {
+                id: prevTrades.length + 1,
+                tradedate:data.tradedate,
+                brandname: data.brandname,
+                investmenttype: data.investmenttype,
+                tradetype: data.tradetype,
+                unitprice: data.unitprice,
+                fee: data.fee,
+                quantity: data.quantity,
+                reason: data.reason,
+                memo: data.memo
+        }])
+    }
+
+    const editTrade = (id:number, data: FormData) => {
+        setTrades(prevTrades =>
+            prevTrades.map((trade) =>
+            trade.id === id ? {
+                ...trade,
+                tradedate: data.tradedate,
+                brandname: data.brandname,
+                investmenttype: data.investmenttype,
+                tradetype: data.tradetype,
+                unitprice: data.unitprice,
+                fee: data.fee,
+                quantity: data.quantity,
+                reason: data.reason,
+                memo: data.memo
+            } : trade)
+        )
+    }
+    
+    const deleteTrade = (id: number) => {
+        const newTrades = trades.filter((trade) => trade.id !== id);
+        setTrades(newTrades);
+    }
 
     return (
         /* HTMLで画面の見た目部分を書く */
@@ -15,7 +94,7 @@ export default function TradeListTemp() {
             <main>
                 <header className="h-[76px] border-b px-8 flex justify-between items-center">
                     <h4>投資一覧</h4>
-                    <button type="button" id="open-trade-dialg-btn" className="font-bold" onClick={() => setIsOpen(true)}>
+                    <button type="button" id="open-trade-dialg-btn" className="font-bold" onClick={() => {setIsOpen(true); setDialogMode("new")}}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-plus" aria-hidden="true" data-icon="inline-start"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
                         投資データを登録
                     </button>
@@ -140,7 +219,7 @@ export default function TradeListTemp() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr className="cursor-pointer"  onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
                                         <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">株式投資</span></td>
                                         <td className="table-padding font-bold blue-text border-b">トヨタ自動車 (7203)</td>
                                         <td className="table-padding font-bold green-text border-b">購入</td>
@@ -150,7 +229,7 @@ export default function TradeListTemp() {
                                         <td className="table-padding grey-text border-b">¥700</td>
                                         <td className="table-padding grey-text border-b">2026/09/23</td>
                                     </tr>
-                                    <tr>
+                                    <tr className="cursor-pointer" onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
                                         <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">株式投資</span></td>
                                         <td className="table-padding font-bold blue-text border-b">任天堂 (7954)</td>
                                         <td className="table-padding font-bold green-text border-b">購入</td>
@@ -160,7 +239,7 @@ export default function TradeListTemp() {
                                         <td className="table-padding grey-text border-b">¥1000</td>
                                         <td className="table-padding grey-text border-b">2026/09/20</td>
                                     </tr>
-                                    <tr>
+                                    <tr className="cursor-pointer" onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
                                         <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">仮想通貨</span></td>
                                         <td className="table-padding font-bold blue-text border-b">Bitcoin (BTC)</td>
                                         <td className="table-padding font-bold red-text border-b">売却</td>
@@ -183,8 +262,11 @@ export default function TradeListTemp() {
                         </div>
                     </section>
                 </div>
+                {trades.map((trade) => (
+                    <p>{trade.brandname}</p>
+                ))}
             </main>
-            <RegistTradeDialog isOpen={isOpen} onClose={() => setIsOpen(false)}/>
+            <RegistTradeDialog isOpen={isOpen} isMode={dialogMode} onClose={() => setIsOpen(false)} addTrade={addTrade} editTrade={editTrade} deleteTrade={deleteTrade}/>
         </div>
         </>
     )
