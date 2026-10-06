@@ -51,13 +51,13 @@ export default function TradeListTemp() {
             ...prevTrades,
             {
                 id: prevTrades.length + 1,
-                tradedate:data.tradedate,
+                tradedate: new Date(data.tradedate),
                 brandname: data.brandname,
                 investmenttype: data.investmenttype,
                 tradetype: data.tradetype,
-                unitprice: data.unitprice,
-                fee: data.fee,
-                quantity: data.quantity,
+                unitprice: parseInt(data.unitprice),
+                fee: parseInt(data.fee),
+                quantity: parseInt(data.quantity),
                 reason: data.reason,
                 memo: data.memo
         }])
@@ -68,13 +68,13 @@ export default function TradeListTemp() {
             prevTrades.map((trade) =>
             trade.id === id ? {
                 ...trade,
-                tradedate: data.tradedate,
+                tradedate: new Date(data.tradedate),
                 brandname: data.brandname,
                 investmenttype: data.investmenttype,
                 tradetype: data.tradetype,
-                unitprice: data.unitprice,
-                fee: data.fee,
-                quantity: data.quantity,
+                unitprice: parseInt(data.unitprice),
+                fee: parseInt(data.fee),
+                quantity: parseInt(data.quantity),
                 reason: data.reason,
                 memo: data.memo
             } : trade)
@@ -86,6 +86,13 @@ export default function TradeListTemp() {
         setTrades(newTrades);
     }
 
+    const totalUnitPrice = trades
+        .filter(trade => trade.tradetype === 1)
+        .reduce((sum, trade) => sum + trade.unitprice * trade.quantity + trade.fee, 0);
+
+    const totalSellPrice = trades
+        .filter(trade => trade.tradetype === 2)
+        .reduce((sum, trade) => sum + trade.unitprice * trade.quantity + trade.fee, 0);
     return (
         /* HTMLで画面の見た目部分を書く */
         <>
@@ -112,7 +119,7 @@ export default function TradeListTemp() {
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">データ件数</p>
-                                    <p className="data-count font-bold">6件</p>
+                                    <p className="data-count font-bold">{trades.length}件</p>
                                 </div>
                                 <div id="data-count-img">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chart-column" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
@@ -124,7 +131,7 @@ export default function TradeListTemp() {
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">購入金額合計</p>
-                                    <p className="data-count font-bold green-text">¥344,300</p>
+                                    <p className="data-count font-bold green-text">¥{totalUnitPrice}</p>
                                 </div>
                                 <div id="total-buy-amount-img">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-down" aria-hidden="true"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>
@@ -136,7 +143,7 @@ export default function TradeListTemp() {
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">売却金額合計</p>
-                                    <p className="data-count font-bold red-text">¥78,200</p>
+                                    <p className="data-count font-bold red-text">¥{totalSellPrice}</p>
                                 </div>
                                 <div id="total-sell-amount-img">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-arrow-up" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
@@ -148,7 +155,7 @@ export default function TradeListTemp() {
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">収支</p>
-                                    <p className="data-count font-bold  red-text">-¥266,100</p>
+                                    <p className="data-count font-bold  red-text">¥{totalSellPrice - totalUnitPrice}</p>
                                 </div>
                                 <div id="balance-img">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-trending-down" aria-hidden="true"><path d="M16 17h6v-6"></path><path d="m22 17-8.5-8.5-5 5L2 7"></path></svg>
@@ -219,36 +226,18 @@ export default function TradeListTemp() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className="cursor-pointer"  onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
-                                        <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">株式投資</span></td>
-                                        <td className="table-padding font-bold blue-text border-b">トヨタ自動車 (7203)</td>
-                                        <td className="table-padding font-bold green-text border-b">購入</td>
-                                        <td className="table-padding font-bold border-b">¥108,500</td>
-                                        <td className="table-padding grey-text border-b">¥2,700</td>
-                                        <td className="table-padding grey-text border-b">40</td>
-                                        <td className="table-padding grey-text border-b">¥700</td>
-                                        <td className="table-padding grey-text border-b">2026/09/23</td>
-                                    </tr>
-                                    <tr className="cursor-pointer" onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
-                                        <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">株式投資</span></td>
-                                        <td className="table-padding font-bold blue-text border-b">任天堂 (7954)</td>
-                                        <td className="table-padding font-bold green-text border-b">購入</td>
-                                        <td className="table-padding font-bold border-b">¥4,200</td>
-                                        <td className="table-padding grey-text border-b">¥700</td>
-                                        <td className="table-padding grey-text border-b">5</td>
-                                        <td className="table-padding grey-text border-b">¥1000</td>
-                                        <td className="table-padding grey-text border-b">2026/09/20</td>
-                                    </tr>
-                                    <tr className="cursor-pointer" onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
-                                        <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">仮想通貨</span></td>
-                                        <td className="table-padding font-bold blue-text border-b">Bitcoin (BTC)</td>
-                                        <td className="table-padding font-bold red-text border-b">売却</td>
-                                        <td className="table-padding font-bold border-b">¥4,000</td>
-                                        <td className="table-padding grey-text border-b" >¥500</td>
-                                        <td className="table-padding grey-text border-b">1</td>
-                                        <td className="table-padding grey-text border-b">¥100</td>
-                                        <td className="table-padding grey-text border-b">2026/08/10</td>
-                                    </tr>
+                                    {trades.map((trade) => (
+                                        <tr key={trade.id} className="cursor-pointer"  onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
+                                            <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">{trade.investmenttype === 1 ? "株式投資" : "仮想通貨"}</span></td>
+                                            <td className="table-padding font-bold blue-text border-b">{trade.brandname}</td>
+                                            {trade.tradetype === 1 ? <td className="table-padding font-bold green-text border-b">購入</td> : trade.tradetype === 2 && <td className="table-padding font-bold red-text border-b">売却</td>}                                            
+                                            <td className="table-padding font-bold border-b">{ trade.tradetype === 1 ? trade.unitprice * trade.quantity + trade.fee : trade.tradetype === 2 && trade.unitprice * trade.quantity - trade.fee}</td>
+                                            <td className="table-padding grey-text border-b">{trade.unitprice}</td>
+                                            <td className="table-padding grey-text border-b">{trade.quantity}</td>
+                                            <td className="table-padding grey-text border-b">{trade.fee}</td>
+                                            <td className="table-padding grey-text border-b">{trade.tradedate.toLocaleDateString()}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -262,9 +251,6 @@ export default function TradeListTemp() {
                         </div>
                     </section>
                 </div>
-                {trades.map((trade) => (
-                    <p>{trade.brandname}</p>
-                ))}
             </main>
             <RegistTradeDialog isOpen={isOpen} isMode={dialogMode} onClose={() => setIsOpen(false)} addTrade={addTrade} editTrade={editTrade} deleteTrade={deleteTrade}/>
         </div>

@@ -22,21 +22,15 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
         return null;
     }
     const onSubmit = (data: FormData) => {
-        console.log("new")
         addTrade(data);
-        console.log(data);
     };
 
     const editData = (data: FormData) => {
-        console.log("edit")
         editTrade(2, data);
-        console.log(data)
     }
 
     const deleteData = (data: FormData) => {
-        console.log("delete")
         deleteTrade(2,data);
-        console.log(data)
     }
     const investmenttypeValue = watch("investmenttype");
     const tradetypeValue = watch("tradetype");
@@ -78,7 +72,7 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
                                 <span className="text-xs font-bold text-[#5d6880]">投資種別</span>
                                 <div className="flex gap-2">
                                     <button type='button' onClick={() => setValue('investmenttype', 1)} className={`flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold ${investmenttypeValue === 1 ? "border-[#30469b] bg-[#eef1ff] text-[#30469b]" : "border-[#dfe4ed] text-[#8791a4]"}`}>株式投資</button>
-                                    <button type='button' onClick={() => {setValue('investmenttype', 2); setValue('quantity', 1)}} className={`flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold ${investmenttypeValue === 2 ? "border-[#0b975] bg-[#fffaee] text-[#9b7230]" : "border-[#dfe4ed] text-[#8791a4]"}`}>仮想通貨</button>
+                                    <button type='button' onClick={() => {setValue('investmenttype', 2); setValue('quantity', "1")}} className={`flex-1 border rounded-lg px-3 py-2.5 text-xs font-bold ${investmenttypeValue === 2 ? "border-[#0b975] bg-[#fffaee] text-[#9b7230]" : "border-[#dfe4ed] text-[#8791a4]"}`}>仮想通貨</button>
                                 </div>
                             </div>
                             <div className="grid gap-2">
