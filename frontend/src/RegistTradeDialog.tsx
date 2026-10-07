@@ -1,16 +1,17 @@
 import { useForm } from 'react-hook-form';
-import type { FormData } from '../src/types/common'
+import type { FormData, Trade } from '../src/types/common'
 type Props = {
     isOpen: boolean,
     isMode: string,
     onClose:  () => void,
     addTrade: (data: FormData) => void,
     editTrade: (id:number, data:FormData) => void,
-    deleteTrade: (id:number, data:FormData) => void
+    deleteTrade: (id:number, data:FormData) => void,
+    selectedTrade: Trade | null
 }
 
-export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, editTrade, deleteTrade }: Props) {
-    const { register, setValue, watch, handleSubmit, formState: { errors }, getValues } = useForm<FormData>({
+export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, editTrade, deleteTrade, selectedTrade }: Props) {
+    const { register, setValue, watch, handleSubmit, formState: { errors }, getValues, reset } = useForm<FormData>({
         mode: 'onSubmit', 
         defaultValues:{
             investmenttype: 1,
@@ -21,17 +22,60 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
     if (!isOpen) {
         return null;
     }
+
+    if (isMode === "edit") {
+        if(selectedTrade?.tradedate !== null && selectedTrade?.tradedate !== undefined) {
+            setValue("tradedate",`${selectedTrade.tradedate.getFullYear()}-${String(selectedTrade.tradedate.getMonth() + 1).padStart(2, "0")}-${String(selectedTrade.tradedate.getDate()).padStart(2, "0")}`)
+        }
+        if(selectedTrade?.brandname !== null && selectedTrade?.brandname !== undefined) {
+            setValue("brandname", selectedTrade.brandname)
+        }
+        if(selectedTrade?.investmenttype !== null && selectedTrade?.investmenttype !== undefined) {
+            setValue("investmenttype", selectedTrade.investmenttype)
+        }
+        if(selectedTrade?.tradetype !== null && selectedTrade?.tradetype !== undefined) {
+            setValue("tradetype", selectedTrade.tradetype)
+        }
+        if(selectedTrade?.unitprice !== null && selectedTrade?.unitprice !== undefined) {
+            setValue("unitprice", selectedTrade.unitprice.toString())
+        }
+        if(selectedTrade?.fee !== null && selectedTrade?.fee !== undefined) {
+            setValue("fee", selectedTrade.fee.toString())
+        }
+        if(selectedTrade?.quantity !== null && selectedTrade?.quantity !== undefined) {
+            setValue("quantity", selectedTrade.quantity.toString())
+        }
+        if(selectedTrade?.reason !== null && selectedTrade?.reason !== undefined) {
+            setValue("reason", selectedTrade.reason)
+        }
+        if(selectedTrade?.memo !== null && selectedTrade?.memo !== undefined) {
+            setValue("memo", selectedTrade.memo)
+        }
+    }
+
     const onSubmit = (data: FormData) => {
         addTrade(data);
+        onClose();
+        reset();
     };
 
     const editData = (data: FormData) => {
-        editTrade(2, data);
+        if (selectedTrade?.id !== null && selectedTrade?.id !== undefined) {
+            editTrade(selectedTrade.id, data);
+        }
+        onClose();
+        reset();
     }
 
     const deleteData = (data: FormData) => {
-        deleteTrade(2,data);
+        if (selectedTrade?.id !== null && selectedTrade?.id !== undefined) {
+            deleteTrade(selectedTrade.id,data);
+        }
+        onClose();
+        reset();
     }
+
+    
     const investmenttypeValue = watch("investmenttype");
     const tradetypeValue = watch("tradetype");
 
@@ -45,7 +89,7 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
                                 <p className="text-[10px] font-bold text-[#8c96aa] tracking-[.16em]">CMN-03 / TRADE DATA</p>
                                 <h2 className="text-lg font-bold mt-1">投資データを登録</h2>
                             </div>
-                            <button type="button" onClick={onClose}>
+                            <button type="button" onClick={()=> {onClose(); reset();}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
                             </button>
                         </div>
@@ -60,10 +104,10 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
                                     銘柄名
                                     <select {...register("brandname" , { required: "銘柄名は必須です" })} id="brandname-select" className="h-10 border border-[#dfe4ed] rounded-lg px-3 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]">
                                         <option disabled selected value={""}>銘柄名を選択してください</option>
-                                        <option>トヨタ自動車（7203）</option>
-                                        <option>任天堂（7974）</option>
-                                        <option>ソニーグループ（6758）</option>
-                                        <option>三菱UFJ FG（8306）</option>
+                                        <option value={"トヨタ自動車 (7203)"}>トヨタ自動車 (7203)</option>
+                                        <option value={"任天堂 (7954)"}>任天堂 (7954)</option>
+                                        <option value={"ソニーグループ（6758）"}>ソニーグループ（6758）</option>
+                                        <option value={"Bitcoin (BTC)"}>Bitcoin (BTC)</option>
                                     </select>
                                     {errors.brandname && <p>{errors.brandname.message}</p>}
                                 </label>

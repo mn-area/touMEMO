@@ -1,12 +1,13 @@
 import { useState } from "react";
 import RegistTradeDialog from './RegistTradeDialog'
-import type { FormData } from '../src/types/common'
+import type { FormData, Trade } from '../src/types/common'
 import SideMenu from "./SideMenu";
 
 export default function TradeListTemp() {
     // JavaScriptのコードを書く
     const [isOpen, setIsOpen] = useState(false);
     const [dialogMode, setDialogMode] = useState("new");
+    const [selectedTrade, setSelectedTrade] = useState<Trade | null >(null);
     const [trades, setTrades] = useState([
         {
             id: 1,
@@ -17,12 +18,12 @@ export default function TradeListTemp() {
             unitprice: 2700,
             fee: 700,
             quantity:  40,
-            reason: '',
-            memo: ''
+            reason: 'test',
+            memo: 'aaaaa'
         },
         {
             id: 2,
-            tradedate: new Date("2026/09/23"),
+            tradedate: new Date("2026/07/23"),
             brandname: '任天堂 (7954)',
             investmenttype: 1,
             tradetype: 1,
@@ -34,7 +35,7 @@ export default function TradeListTemp() {
         },
         {
             id: 3,
-            tradedate: new Date("2026/09/23"),
+            tradedate: new Date("2026/05/23"),
             brandname: 'Bitcoin (BTC)',
             investmenttype: 2,
             tradetype: 2,
@@ -227,7 +228,7 @@ export default function TradeListTemp() {
                                 </thead>
                                 <tbody>
                                     {trades.map((trade) => (
-                                        <tr key={trade.id} className="cursor-pointer"  onClick={() => {setIsOpen(true); setDialogMode("edit")}}>
+                                        <tr key={trade.id} className="cursor-pointer"  onClick={() => {setIsOpen(true); setDialogMode("edit"); setSelectedTrade(trade);}}>
                                             <td className="table-padding border-b"><span className="font-bold purple-text trade-type-span">{trade.investmenttype === 1 ? "株式投資" : "仮想通貨"}</span></td>
                                             <td className="table-padding font-bold blue-text border-b">{trade.brandname}</td>
                                             {trade.tradetype === 1 ? <td className="table-padding font-bold green-text border-b">購入</td> : trade.tradetype === 2 && <td className="table-padding font-bold red-text border-b">売却</td>}                                            
@@ -252,7 +253,7 @@ export default function TradeListTemp() {
                     </section>
                 </div>
             </main>
-            <RegistTradeDialog isOpen={isOpen} isMode={dialogMode} onClose={() => setIsOpen(false)} addTrade={addTrade} editTrade={editTrade} deleteTrade={deleteTrade}/>
+            <RegistTradeDialog isOpen={isOpen} isMode={dialogMode} onClose={() => setIsOpen(false)} addTrade={addTrade} editTrade={editTrade} deleteTrade={deleteTrade} selectedTrade={selectedTrade}/>
         </div>
         </>
     )
