@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import type { FormData, Trade } from '../src/types/common'
+import { useEffect } from 'react';
 type Props = {
     isOpen: boolean,
     isMode: string,
@@ -19,38 +20,27 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
         },
     });
 
+    useEffect(() => {
+        if (isMode !== "edit" ||   !selectedTrade) {
+            return;
+        }
+        reset(
+            {
+                tradedate: `${selectedTrade.tradedate.getFullYear()}-${String(selectedTrade.tradedate.getMonth() + 1).padStart(2, "0")}-${String(selectedTrade.tradedate.getDate()).padStart(2, "0")}`,
+                brandname: selectedTrade.brandname,
+                investmenttype: selectedTrade.investmenttype,
+                tradetype: selectedTrade.tradetype,
+                unitprice: selectedTrade.unitprice.toString(),
+                fee: selectedTrade.fee.toString(),
+                quantity: selectedTrade.quantity.toString(),
+                reason: selectedTrade.reason,
+                memo: selectedTrade.memo
+            }
+        )
+    },[isMode, selectedTrade, setValue])
+
     if (!isOpen) {
         return null;
-    }
-
-    if (isMode === "edit") {
-        if(selectedTrade?.tradedate !== null && selectedTrade?.tradedate !== undefined) {
-            setValue("tradedate",`${selectedTrade.tradedate.getFullYear()}-${String(selectedTrade.tradedate.getMonth() + 1).padStart(2, "0")}-${String(selectedTrade.tradedate.getDate()).padStart(2, "0")}`)
-        }
-        if(selectedTrade?.brandname !== null && selectedTrade?.brandname !== undefined) {
-            setValue("brandname", selectedTrade.brandname)
-        }
-        if(selectedTrade?.investmenttype !== null && selectedTrade?.investmenttype !== undefined) {
-            setValue("investmenttype", selectedTrade.investmenttype)
-        }
-        if(selectedTrade?.tradetype !== null && selectedTrade?.tradetype !== undefined) {
-            setValue("tradetype", selectedTrade.tradetype)
-        }
-        if(selectedTrade?.unitprice !== null && selectedTrade?.unitprice !== undefined) {
-            setValue("unitprice", selectedTrade.unitprice.toString())
-        }
-        if(selectedTrade?.fee !== null && selectedTrade?.fee !== undefined) {
-            setValue("fee", selectedTrade.fee.toString())
-        }
-        if(selectedTrade?.quantity !== null && selectedTrade?.quantity !== undefined) {
-            setValue("quantity", selectedTrade.quantity.toString())
-        }
-        if(selectedTrade?.reason !== null && selectedTrade?.reason !== undefined) {
-            setValue("reason", selectedTrade.reason)
-        }
-        if(selectedTrade?.memo !== null && selectedTrade?.memo !== undefined) {
-            setValue("memo", selectedTrade.memo)
-        }
     }
 
     const onSubmit = (data: FormData) => {
