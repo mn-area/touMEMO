@@ -21,7 +21,7 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
     });
 
     useEffect(() => {
-        if (isMode !== "edit" ||   !selectedTrade) {
+        if (isMode !== "edit" || !selectedTrade) {
             return;
         }
         reset(

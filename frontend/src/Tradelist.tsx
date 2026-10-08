@@ -3,7 +3,7 @@ import RegistTradeDialog from './RegistTradeDialog'
 import type { FormData, Trade } from '../src/types/common'
 import SideMenu from "./SideMenu";
 
-export default function TradeListTemp() {
+export default function TradeList() {
     // JavaScriptのコードを書く
     const [isOpen, setIsOpen] = useState(false);
     const [dialogMode, setDialogMode] = useState("new");
