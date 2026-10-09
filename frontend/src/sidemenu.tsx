@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 
-export default function SideMenu() {
+type Props = {
+    sideMenuMode: boolean
+}
 
+export default function SideMenu({ sideMenuMode }: Props) {
+    console.log(sideMenuMode)
     return (
         <>
-            <aside>
+            <aside className={`sidebar ${sideMenuMode ? 'open' : 'closed'}`}>
                 <div className="flex h-[76px] items-center border-b gap-3 px-7">
                     <div className="grid size-9 place-items-center rounded-xl text-white bg-[#283c8f]">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-wallet" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>

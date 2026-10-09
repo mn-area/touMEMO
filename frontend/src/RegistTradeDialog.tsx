@@ -45,24 +45,60 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
 
     const onSubmit = (data: FormData) => {
         addTrade(data);
+        reset(
+            {
+                tradedate: "",
+                brandname: "",
+                investmenttype: 1,
+                tradetype: 1,
+                unitprice: "",
+                fee: "",
+                quantity: "",
+                reason: "",
+                memo: ""
+            }
+        );
         onClose();
-        reset();
     };
 
     const editData = (data: FormData) => {
         if (selectedTrade?.id !== null && selectedTrade?.id !== undefined) {
             editTrade(selectedTrade.id, data);
         }
+        reset(
+            {
+                tradedate: "",
+                brandname: "",
+                investmenttype: 1,
+                tradetype: 1,
+                unitprice: "",
+                fee: "",
+                quantity: "",
+                reason: "",
+                memo: ""
+            }
+        );
         onClose();
-        reset();
     }
 
     const deleteData = (data: FormData) => {
         if (selectedTrade?.id !== null && selectedTrade?.id !== undefined) {
             deleteTrade(selectedTrade.id,data);
         }
+        reset(
+            {
+                tradedate: "",
+                brandname: "",
+                investmenttype: 1,
+                tradetype: 1,
+                unitprice: "",
+                fee: "",
+                quantity: "",
+                reason: "",
+                memo: ""
+            }
+        ); 
         onClose();
-        reset();
     }
 
     
@@ -79,7 +115,7 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
                                 <p className="text-[10px] font-bold text-[#8c96aa] tracking-[.16em]">CMN-03 / TRADE DATA</p>
                                 <h2 className="text-lg font-bold mt-1">投資データを登録</h2>
                             </div>
-                            <button type="button" onClick={()=> {onClose(); reset();}}>
+                            <button type="button" onClick={()=> { reset(); onClose(); }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
                             </button>
                         </div>
@@ -124,7 +160,7 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     手数料
-                                    <input {...register("fee" , {min:{value:1 , message:"0以上で入力してください"}})} id="fee-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
+                                    <input {...register("fee" , { required: "手数料は必須です" ,min:{value:0 , message:"0以上で入力してください"}})} id="fee-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
                                     {errors.fee && <p>{errors.fee.message}</p>}
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">

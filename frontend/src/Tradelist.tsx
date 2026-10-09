@@ -5,6 +5,7 @@ import SideMenu from "./SideMenu";
 
 export default function TradeList() {
     // JavaScriptのコードを書く
+    const [sideMenuMode, setSideMenuMode] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [dialogMode, setDialogMode] = useState("new");
     const [selectedTrade, setSelectedTrade] = useState<Trade | null >(null);
@@ -97,11 +98,16 @@ export default function TradeList() {
     return (
         /* HTMLで画面の見た目部分を書く */
         <>
-        <div id="screen-area">
-            <SideMenu />
+        <div className="flex h-screen">
+            <SideMenu sideMenuMode={sideMenuMode} />
             <main>
-                <header className="h-[76px] border-b px-8 flex justify-between items-center">
-                    <h4>投資一覧</h4>
+                <header className="h-[76px] border-b px-8 flex justify-between items-center bg-white">
+                    <div className="flex items-center gap-4">
+                        <button className="hover:bg-[#f3f3f3]" onClick={() => setSideMenuMode(!sideMenuMode)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-menu" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg>
+                        </button>
+                        <h4>投資一覧</h4>
+                    </div>
                     <button type="button" id="open-trade-dialg-btn" className="font-bold" onClick={() => {setIsOpen(true); setDialogMode("new")}}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-circle-plus" aria-hidden="true" data-icon="inline-start"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
                         投資データを登録
@@ -243,7 +249,7 @@ export default function TradeList() {
                             </table>
                         </div>
                         <div id="data-area-footer">
-                            <span>全3件</span>
+                            <span>全{trades.length}件</span>
                             <div id="pagination-area">
                                 <button type="button" data-slot="button" aria-label="前のページ"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevron-left" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
                                 <span className="font-bold">1</span>

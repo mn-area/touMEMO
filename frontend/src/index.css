@@ -127,11 +127,6 @@ body, h1, p {
   margin: 0;
 }
 
-#screen-area {
-  display: flex;
-  height: 100vh;
-}
-
 aside {
   width: 245px;
   border-right: 1px solid #ECEFF5;
@@ -146,6 +141,17 @@ main {
 
 header h4 {
   margin: 0;
+}
+
+.sidebar {
+  width: 250px;
+  color: white;
+  transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.sidebar.closed {
+  width: 0;
+  overflow: hidden;
 }
 
 #open-trade-dialg-btn {
