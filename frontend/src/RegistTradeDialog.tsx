@@ -179,15 +179,17 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
                                     <textarea {...register("memo")}  id="memo-input" placeholder="メモを入力" rows={3} className="resize-none rounded-lg border border-[#dfe4ed] px-3 py-2 text-sm font-normal text-[#26334f] outline-none focus:border-[#6276c2]"></textarea>
                                 </label>
                             </div>
-                            <div className="flex justify-between border-t border-[#edf0f5] pt-5">
-                                <span></span>
+                            <div>
                                 {isMode === "new" &&
-                                    <button type="submit" id="trade-regist-btn" className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">登録する</button>
+                                    <div className="flex justify-between border-t border-[#edf0f5] pt-5">
+                                        <span></span>
+                                        <button type="submit" className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">登録する</button>
+                                    </div>
                                 }
                                 {isMode === "edit" &&
-                                <div>
-                                    <button type='button' id="trade-delete-btn" onClick={() => deleteData(getValues())} className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">削除</button>
-                                    <button type='button' id="trade-edit-btn" onClick={() => editData(getValues())} className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">編集内容を保存</button>
+                                <div className="flex justify-between border-t border-[#edf0f5] pt-5">
+                                    <button type='button' onClick={() => deleteData(getValues())} className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 bg-red-500/50 text-white">削除</button>
+                                    <button type='button' onClick={() => editData(getValues())} className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 text-white">編集内容を保存</button>
                                 </div>
                                 }
                             </div>

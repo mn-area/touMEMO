@@ -14,8 +14,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/Calender" element={<Calendar />} />
         <Route path="/TradeGraph" element={<TradeGraph />} />
       </Routes>
-      {/* <TradeList /> */}
     </StrictMode>
   </BrowserRouter>
-
 )
