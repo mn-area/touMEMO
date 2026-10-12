@@ -5,7 +5,6 @@ type Props = {
 }
 
 export default function SideMenu({ sideMenuMode }: Props) {
-    console.log(sideMenuMode)
     return (
         <>
             <aside className={`sidebar ${sideMenuMode ? 'open' : 'closed'}`}>
