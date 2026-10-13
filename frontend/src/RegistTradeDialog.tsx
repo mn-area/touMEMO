@@ -155,17 +155,17 @@ export default function RegistTradeDialog ({ isOpen, isMode, onClose, addTrade, 
                             <div  className="grid gap-4 sm:grid-cols-3">
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     単価
-                                    <input {...register("unitprice" , { required: "単価は必須です" , min:{value:1 , message:"0以上で入力してください"}})} id="unitprice-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
+                                    <input {...register("unitprice" , { required: "単価は必須です" , min:{value:1 , message:"0以上で入力してください"}, valueAsNumber:true})} id="unitprice-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
                                     {errors.unitprice && <p>{errors.unitprice.message}</p>}
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     手数料
-                                    <input {...register("fee" , { required: "手数料は必須です" ,min:{value:0 , message:"0以上で入力してください"}})} id="fee-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
+                                    <input {...register("fee" , { required: "手数料は必須です" ,min:{value:0 , message:"0以上で入力してください"}, valueAsNumber:true})} id="fee-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]"></input>
                                     {errors.fee && <p>{errors.fee.message}</p>}
                                 </label>
                                 <label className="grid gap-2 text-xs font-bold text-[#5d6880]">
                                     数量
-                                    <input {...register("quantity" , { required: "数量は必須です" , min:{value:1 , message:"0以上で入力してください"} })} id="quantity-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]" disabled={investmenttypeValue === 2}></input>
+                                    <input {...register("quantity" , { required: "数量は必須です" , min:{value:1 , message:"0以上で入力してください"}, valueAsNumber:true })} id="quantity-input" type="number" placeholder="0" min={0} className="h-10 border rounded-lg border-[#dfe4ed] font-normal outline-none focus:border-[#6276c2]" disabled={investmenttypeValue === 2}></input>
                                     {errors.quantity && <p>{errors.quantity.message}</p>}
                                 </label>
                             </div>

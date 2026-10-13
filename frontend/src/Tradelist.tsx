@@ -16,9 +16,9 @@ export default function TradeList() {
             brandname: 'トヨタ自動車 (7203)',
             investmenttype: 1,
             tradetype: 1,
-            unitprice: 2700,
-            fee: 700,
-            quantity:  40,
+            unitprice: 200,
+            fee: 100,
+            quantity:  10,
             reason: 'test',
             memo: 'aaaaa'
         },
@@ -28,9 +28,9 @@ export default function TradeList() {
             brandname: '任天堂 (7954)',
             investmenttype: 1,
             tradetype: 1,
-            unitprice: 700,
-            fee: 1000,
-            quantity:  5,
+            unitprice: 100,
+            fee: 100,
+            quantity:  1,
             reason: '',
             memo: ''
         },
@@ -40,7 +40,7 @@ export default function TradeList() {
             brandname: 'Bitcoin (BTC)',
             investmenttype: 2,
             tradetype: 2,
-            unitprice: 500,
+            unitprice: 2500,
             fee: 100,
             quantity:  1,
             reason: '',
@@ -94,7 +94,7 @@ export default function TradeList() {
 
     const totalSellPrice = trades
         .filter(trade => trade.tradetype === 2)
-        .reduce((sum, trade) => sum + trade.unitprice * trade.quantity + trade.fee, 0);
+        .reduce((sum, trade) => sum + trade.unitprice * trade.quantity - trade.fee, 0);
     return (
         /* HTMLで画面の見た目部分を書く */
         <>
@@ -162,7 +162,7 @@ export default function TradeList() {
                             <div className="card-data">
                                 <div>
                                     <p className="card-title font-bold">収支</p>
-                                    <p className="data-count font-bold  red-text">¥{totalSellPrice - totalUnitPrice}</p>
+                                    <p className={`data-count font-bold  ${totalSellPrice - totalUnitPrice > 0 ? "green-text" : totalSellPrice - totalUnitPrice < 0 ?  "red-text" : "black-text"}`}>¥{totalSellPrice - totalUnitPrice}</p>
                                 </div>
                                 <div id="balance-img">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-trending-down" aria-hidden="true"><path d="M16 17h6v-6"></path><path d="m22 17-8.5-8.5-5 5L2 7"></path></svg>
