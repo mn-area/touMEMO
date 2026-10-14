@@ -4,10 +4,49 @@ import FullCalendar from "@fullcalendar/react"; // FullCalendarコンポーネ�
 import dayGridPlugin from "@fullcalendar/daygrid"; // 月間カレンダー
 import timeGridPlugin from "@fullcalendar/timegrid"; // 週間・日間カレンダー
 import interactionPlugin from "@fullcalendar/interaction"; // ユーザー操作対応
+import type { Trade } from "./types/common";
 
 export const Calendar = () => {
 
     const [sideMenuMode, setSideMenuMode] = useState(true);
+    const SampleData: Trade[] = [
+        {
+            id: 1,
+            tradedate: new Date("2026/09/23"),
+            brandname: 'トヨタ自動車 (7203)',
+            investmenttype: 1,
+            tradetype: 1,
+            unitprice: 200,
+            fee: 100,
+            quantity:  10,
+            reason: 'test',
+            memo: 'aaaaa'
+        },
+        {
+            id: 2,
+            tradedate: new Date("2026/07/23"),
+            brandname: '任天堂 (7954)',
+            investmenttype: 1,
+            tradetype: 1,
+            unitprice: 100,
+            fee: 100,
+            quantity:  1,
+            reason: '',
+            memo: ''
+        },
+        {
+            id: 3,
+            tradedate: new Date("2026/05/23"),
+            brandname: 'Bitcoin (BTC)',
+            investmenttype: 2,
+            tradetype: 2,
+            unitprice: 2500,
+            fee: 100,
+            quantity:  1,
+            reason: '',
+            memo: ''
+        }
+    ]
 
     return (
         <>
@@ -28,6 +67,10 @@ export const Calendar = () => {
                             initialView="dayGridMonth" // 月表示
                             height="auto"
                             locale={"ja"}
+                            events={[{
+                                title: 'test',
+                                start: '2026-10-15'
+                            }]}
                         >
                             
                         </FullCalendar>
