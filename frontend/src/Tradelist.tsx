@@ -95,6 +95,7 @@ export default function TradeList() {
     const totalSellPrice = trades
         .filter(trade => trade.tradetype === 2)
         .reduce((sum, trade) => sum + trade.unitprice * trade.quantity - trade.fee, 0);
+
     return (
         /* HTMLで画面の見た目部分を書く */
         <>

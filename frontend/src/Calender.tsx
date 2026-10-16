@@ -5,6 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // 月間カレンダー
 import timeGridPlugin from "@fullcalendar/timegrid"; // 週間・日間カレンダー
 import interactionPlugin from "@fullcalendar/interaction"; // ユーザー操作対応
 import type { FormData } from "./types/common";
+import type { DayCellContentArg } from "@fullcalendar/core/index.js";
 
 export const Calendar = () => {
 
@@ -95,14 +96,24 @@ export const Calendar = () => {
                             //  total: 2000
     );
 
-    // 結果の確認
-    console.log(newGroupedArray);
+    function createDayCell(info:Date){
+        const formattedDate = new Intl.DateTimeFormat('ja-JP', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).format(info); // yyyy/mm/dd形式に変換
 
-    function createDayCell(newGroupedArray: CalendarData[]) {
-        console.log(newGroupedArray)
-        for (const h of newGroupedArray) {
-            console.log(h.tradedate)
-        }
+        const dayCellData = newGroupedArray.find(data => data.tradedate === formattedDate); // 日付に一致するデータを探す
+
+        if (!dayCellData) return null; // なかった場合はreturnで終了
+
+        return (
+            <div>
+                <span className="text-rose-600">売却 ￥{dayCellData.sellprice}</span><br></br>
+                <span className="text-emerald-600">購入 ￥{dayCellData.buyprice}</span><br></br>
+                <span className={dayCellData.total > 0 ? "text-emerald-600" : dayCellData.total < 0 ? "text-rose-600" : "black-text"}>収支 ￥{dayCellData.total}</span>
+            </div>
+        )
     }
 
     return (
@@ -119,19 +130,18 @@ export const Calendar = () => {
                         </div>
                     </header>
                     <div>
-                        <button type='button' onClick={() => createDayCell(newGroupedArray)} className="border rounded-lg text-sm font-medium px-2.5 bg-[#30469b] h-8 bg-red-500/50 text-white">削除</button>
-
                         <FullCalendar
                             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                             initialView="dayGridMonth" // 月表示
                             height="auto"
                             locale={"ja"}
-                            events={[{
-                                title: 'test',
-                                start: '2026-10-15'
-                            }]}
+                            dayCellContent={(info:DayCellContentArg) =>
+                                <>
+                                    <span className="text-right">{info.dayNumberText}</span>
+                                    <div>{createDayCell(info.date)}</div>
+                                </>
+                            }
                         >
-                            
                         </FullCalendar>
                     </div>
                 </main>
