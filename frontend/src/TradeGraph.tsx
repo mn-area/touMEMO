@@ -1,9 +1,20 @@
 import { useState } from "react";
 import SideMenu from "./SideMenu";
+import { LineChart, Line } from 'recharts';
 
 export const TradeGraph = () => {
 
     const [sideMenuMode, setSideMenuMode] = useState(true);
+
+    const data = [
+    { day: '月', サイト訪問者数: 2200 },
+    { day: '火', サイト訪問者数: 1280 },
+    { day: '水', サイト訪問者数: 3300 },
+    { day: '木', サイト訪問者数: 4000 },
+    { day: '金', サイト訪問者数: 2900 },
+    { day: '土', サイト訪問者数: 3800 },
+    { day: '日', サイト訪問者数: 3500 },
+    ];
 
     return (
     <div className="flex  h-screen">
@@ -17,6 +28,11 @@ export const TradeGraph = () => {
                     <h4>投資推移グラフ</h4>
                 </div>
             </header>
+            <div>
+                <LineChart width={500} height={300} data={data}>
+                    <Line type="monotone" dataKey="サイト訪問者数" />
+                </LineChart>
+            </div>
         </main>
     </div>
     );
