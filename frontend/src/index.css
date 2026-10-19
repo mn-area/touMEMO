@@ -383,6 +383,10 @@ header h4 {
   border-radius: 0.5rem;
 }
 
+#graph-area {
+  margin-top: 32px;
+}
+
 @media (min-width: 80rem) {
   #card-area {
     grid-template-columns: repeat(4, minmax(0px, 1fr));
