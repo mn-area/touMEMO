@@ -1,58 +1,121 @@
 import { useState } from "react";
 import SideMenu from "./SideMenu";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Label } from 'recharts';
+import type { FormData } from "./types/common";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Label, Tooltip, type TooltipContentProps } from 'recharts';
+import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 export const TradeGraph = () => {
 
+    type GraphData = {
+        date: string;
+        buyprice: number;
+        sellprice: number;
+        total: number;
+    }
     const [sideMenuMode, setSideMenuMode] = useState(true);
 
-    const data = [
-        { day: '2026/10/19', サイト訪問者数: 2200 },
-        { day: '2026/10/20', サイト訪問者数: 1280 },
-        { day: '2026/10/21', サイト訪問者数: 3300 },
-        { day: '2026/10/22', サイト訪問者数: 4000 },
-        { day: '2026/10/23', サイト訪問者数: 2900 },
-        { day: '2026/10/24', サイト訪問者数: 3800 },
-        { day: '2026/10/25', サイト訪問者数: 3500 },
-    ];
-    const [trades, setTrades] = useState([
+    const SampleData: FormData[] = [
         {
-            id: 1,
-            tradedate: new Date("2026/09/23"),
+            tradedate: "2026/10/13",
             brandname: 'トヨタ自動車 (7203)',
             investmenttype: 1,
             tradetype: 1,
-            unitprice: 200,
-            fee: 100,
-            quantity:  10,
+            unitprice: "200",
+            fee: "100",
+            quantity:  "10",
             reason: 'test',
             memo: 'aaaaa'
         },
         {
-            id: 2,
-            tradedate: new Date("2026/07/23"),
+            tradedate: "2026/10/13",
             brandname: '任天堂 (7954)',
             investmenttype: 1,
-            tradetype: 1,
-            unitprice: 100,
-            fee: 100,
-            quantity:  1,
+            tradetype: 2,
+            unitprice: "100",
+            fee: "100",
+            quantity:  "1",
             reason: '',
             memo: ''
         },
         {
-            id: 3,
-            tradedate: new Date("2026/05/23"),
+            tradedate: "2026/10/15",
             brandname: 'Bitcoin (BTC)',
             investmenttype: 2,
             tradetype: 2,
-            unitprice: 2500,
-            fee: 100,
-            quantity:  1,
+            unitprice: "2500",
+            fee: "100",
+            quantity:  "1",
+            reason: '',
+            memo: ''
+        },
+        {
+            tradedate: "2026/10/16",
+            brandname: 'Bitcoin (BTC)',
+            investmenttype: 2,
+            tradetype: 1,
+            unitprice: "200",
+            fee: "100",
+            quantity:  "1",
+            reason: '',
+            memo: ''
+        },
+        {
+            tradedate: "2026/10/18",
+            brandname: 'Bitcoin (BTC)',
+            investmenttype: 2,
+            tradetype: 2,
+            unitprice: "1200",
+            fee: "100",
+            quantity:  "1",
             reason: '',
             memo: ''
         }
-    ]);
+    ]
+
+    // tradesから日付ごと＆購入区分毎にunitpriceを合計し、売却-購入で収支を割り出し、新しいグラフ用配列を作成
+    const newGroupedArray: GraphData[] = Object.values(
+        SampleData.reduce((acc, current) => {
+            const key = current.tradedate;
+
+            if (!acc[key]) {
+                acc[key] = {
+                    date: key,
+                    buyprice: 0,
+                    sellprice: 0,
+                    total: 0
+                };
+            }
+
+            if (current.tradetype === 1) {
+                acc[key].buyprice += Number(current.unitprice || 0); // 文字列を数値に変換して足す
+            } else if (current.tradetype === 2) {
+                acc[key].sellprice += Number(current.unitprice || 0); // 文字列を数値に変換して足す
+            }
+            // 新しい型のオブジェクトに対して、データを計算・追加していく
+            acc[key].total = acc[key].sellprice - acc[key].buyprice; // 文字列を数値に変換して足す
+
+            return acc;
+        }, {} as Record<string, GraphData>)
+    );
+
+    const CustomTooltip = ({active, payload}: TooltipContentProps<ValueType,NameType>) => {
+        if (active && payload && payload.length > 0) {
+            const data = payload[0].payload
+            const balance = data.total
+            const isPositive = balance >= 0
+
+            return (
+                <div className="rounded-lg border border-border bg-white p-2 shadow-md">
+                    <p className="text-sm font-medium text-foreground">{data.date}</p>
+                    <p className={`text-sm font-semibold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                    {isPositive ? '+' : ''}
+                    {balance.toLocaleString()}円
+                    </p>
+                </div>
+            )
+        }
+        return null;
+    }
 
     return (
     <div className="flex  h-screen">
@@ -72,7 +135,7 @@ export const TradeGraph = () => {
                         <div className="card-data">
                             <div>
                                 <p className="card-title font-bold">データ件数</p>
-                                <p className="data-count font-bold">{trades.length}件</p>
+                                <p className="data-count font-bold">{SampleData.length}件</p>
                             </div>
                             <div id="data-count-img">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chart-column" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
@@ -125,14 +188,14 @@ export const TradeGraph = () => {
                         <p className="mt-1 text-xs text-[#8794a3]">2026年10月01日 〜 2026年10月31日</p>
                     </div>
                     <ResponsiveContainer  height={384}>
-                        <LineChart data={data} margin={{top: 20, right: 30, bottom: 20, left: 20 }} className="border border-[#dfe4ed] rounded-xl">
-                            <Line type="monotone" dataKey="サイト訪問者数" />
-                            <CartesianGrid />
-                            <XAxis dataKey={"day"} />
+                        <LineChart data={newGroupedArray} margin={{top: 20, right: 30, bottom: 20, left: 20 }} className="border border-[#dfe4ed] rounded-xl">
+                            <Line dataKey="total" strokeWidth={2} isAnimationActive={true} animationDuration={800} />
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey={"date"} />
                             <YAxis>
                                 <Label value="収支" dx={-25} angle={-90}></Label>
                             </YAxis>
-
+                            <Tooltip content={CustomTooltip}/>
                         </LineChart>
                     </ResponsiveContainer>
 
