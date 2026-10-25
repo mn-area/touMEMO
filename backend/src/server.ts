@@ -1,12 +1,12 @@
 import express, { Request, Response } from "express";
-import { checkDatabaseConnection } from './db';
+import { selectTradeData } from './db';
 
 const app = express();
 const PORT = 3000;
 
 // 接続確認用のAPIエンドポイント
 app.get('/health/db', async (req: Request, res: Response) => {
-    const isConnected = await checkDatabaseConnection();
+    const isConnected = await selectTradeData();
     if (isConnected) {
         res.status(200).json({ status: 'connected', message: 'Database connection is healthy.' });
     } else {
@@ -17,7 +17,7 @@ app.get('/health/db', async (req: Request, res: Response) => {
 app.listen(PORT, async () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     // サーバー起動時にも接続確認を実行
-    await checkDatabaseConnection();
+    await selectTradeData();
 });
 
 // app.get("/", (req, res) => {
