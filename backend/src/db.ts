@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, QueryResult } from 'pg';
 
 const pool = new Pool({
     user: 'postgres',        // PostgreSQLのユーザー名
@@ -8,18 +8,30 @@ const pool = new Pool({
     port: 5432,                  // ポート番号（デフォルト: 5432）
 });
 
-export const checkDatabaseConnection = async (): Promise<boolean> => {
+type tradeData = {
+    id: number;
+    tradedate: Date;
+    brandname: string;
+    investmenttype: number;
+    tradetype: number;
+    unitprice: number;
+    fee: number;
+    quantity: number;
+    reason: string;
+    memo: string;
+}
+
+export const selectTradeData = async (): Promise<tradeData[]> => {
+    const client = await pool.connect();
     try {
-        const client = await pool.connect();
-        const result = await client.query('SELECT NOW()');
-        console.log('PostgreSQL 接続成功:', result.rows[0]);
-        client.release();
-        return true;
+        const result = await client.query('SELECT * FROM trade');
+
+        return result.rows;
     } catch (error) {
         console.error('PostgreSQL 接続失敗:', error);
-        return false;
+        throw error; 
     } finally {
-        
+        client.release();
     }
 };
 
